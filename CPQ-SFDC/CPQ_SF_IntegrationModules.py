@@ -75,10 +75,18 @@ class CL_SalesforceIntegrationModules(CL_CpqHelper):
                     newrow["DATE"] = DateTime.Now
                     newrow["TITLE"] = title
                     newrow["DESCRIPTION"] = chunk
-                    newrow["CARTID"] = self.Quote.QuoteId
-                    newrow["CARTCOMPOSITENUMBER"] = self.Quote.CompositeNumber
-                    newrow["OPPORTUNITYID"] = self.Quote.GetCustomField("CPQ_SF_OPPORTUNITY_ID").Content
-                    newrow["OPPORTUNITYNAME"] = self.Quote.GetCustomField("CPQ_SF_OPPORTUNITY_NAME").Content
+                    # links logs to both a quote and an opportunity ID
+                    if self.Quote:
+                        newrow["CARTID"] = self.Quote.QuoteId
+                        newrow["CARTCOMPOSITENUMBER"] = self.Quote.CompositeNumber
+                        if self.Session["OpportunityId"]:
+                            newrow["OPPORTUNITYID"] = self.Session["OpportunityId"]
+                        else:
+                            newrow["OPPORTUNITYID"] = self.Quote.GetCustomField("CPQ_SF_OPPORTUNITY_ID").Content
+                        newrow["OPPORTUNITYNAME"] = self.Quote.GetCustomField("CPQ_SF_OPPORTUNITY_NAME").Content
+                    # link the logs to an opportunity Id
+                    elif self.Session["OpportunityId"]:
+                        newrow["OPPORTUNITYID"] = self.Session["OpportunityId"]
                     tableInfo.AddRow(newrow)
                 SqlHelper.Upsert(tableInfo)
 

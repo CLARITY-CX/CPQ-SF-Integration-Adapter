@@ -22,6 +22,8 @@ class CL_GeneralIntegrationSettings:
     SF_MCE = False
     # Debugging parameter to log all API calls in CPQ. This should remain inactive.
     LOG_API_CALLS = False
+    # Debugging parameter to log all API calls in Custom Table. This should remain inactive.
+    LOG_API_CALLS_IN_CUSTOM_TABLE = False
     # Refresh cache for Salesforce object definitions when using tag scripts (CPQ_SF_***_TAG)
     TAG_CACHING = True
     # Update custom object line item and disable deletion of all object line items
